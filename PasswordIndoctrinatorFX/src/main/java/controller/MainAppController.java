@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 public class MainAppController {
@@ -47,7 +48,9 @@ public class MainAppController {
     
     private PasswordController pwc;
     
+    private int count;
     
+    private final int MAX_TRIES = 10;
 
     @FXML
     void handleCheckButtonAction(ActionEvent event) {
@@ -65,13 +68,23 @@ public class MainAppController {
 			boolean result = this.pwc.checkPasswordMatch(attempt);
 			if(result) {
 				this.setRootBorder("success");
-				this.lblStatus.setText("Matches! Do it again!");
 				this.pwfPasswordAttempt.setText("");
+				this.count++;
+				
+				if(count== MAX_TRIES) {
+					this.lblStatus.setText("You've matched it 10 times in a row!\nI think you got it memorized.");
+					this.pwfPasswordAttempt.setDisable(true);
+				} else {
+					this.lblStatus.setText(String.format("Matches! Do it again!    Matched %1$d/10", this.count));
+				}
 			} else {
 				this.setRootBorder("error");
 				this.lblStatus.setText("Whoops... try again!");
 				this.pwfPasswordAttempt.setText("");
+				this.count = 0;
 			}
+			
+			this.btnCheck.setDisable(true);
 		}
 	}
 
@@ -84,12 +97,42 @@ public class MainAppController {
 			this.pwfPasswordToMemorize.setDisable(true);
 			this.pwfPasswordAttempt.setDisable(false);
 			this.lblStatus.setText("Start!");
+			this.count = 0;
+			this.btnCheck.setDisable(true);
 		}
 	}
 
     @FXML
     void handleResetButtonAction(ActionEvent event) {
     	this.prepareStartup();
+    }
+    
+    @FXML
+    void handlePasswordToMemorizeKeyTypedAction(KeyEvent event) {
+    	String toMemorize = this.pwfPasswordToMemorize.getText();
+    	String key = event.getCharacter();
+    	
+    	if(toMemorize != null && !toMemorize.trim().isEmpty()) {
+    		this.btnCheck.setDisable(false);
+    	} else if(key != null && !key.trim().isEmpty()) {
+    		this.btnCheck.setDisable(false);
+    	} else {
+    		this.btnCheck.setDisable(true);
+    	}
+    }
+    
+    @FXML
+    void handlePasswordAttemptKeyTypedAction(KeyEvent event){
+    	String pwAttempt = this.pwfPasswordAttempt.getText();
+    	String key = event.getCharacter();
+    	
+    	if(pwAttempt != null && !pwAttempt.trim().isEmpty()) {
+    		this.btnCheck.setDisable(false);
+    	} else if(key != null && !key.trim().isEmpty()) {
+    		this.btnCheck.setDisable(false);
+    	} else {
+    		this.btnCheck.setDisable(true);
+    	}
     }
 
     @FXML
@@ -113,6 +156,7 @@ public class MainAppController {
     	this.lblStatus.setText("");
     	this.passwordSet = false;
     	this.pwc = null;
+    	this.btnCheck.setDisable(true);
     	this.setRootBorder("");
     }
 
