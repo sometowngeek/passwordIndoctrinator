@@ -157,6 +157,7 @@ public class MainAppController {
     	this.passwordSet = false;
     	this.pwc = null;
     	this.btnCheck.setDisable(true);
+    	this.count = 0;
     	this.setRootBorder("");
     }
 
