@@ -1,0 +1,19 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root {
+	-fx-border-color: transparent;
+	-fx-border-width: 2.0px;
+	-fx-border-style: solid;
+}
+
+.root.error {
+	-fx-border-color: #f00;
+	-fx-border-width: 2.0px;
+	-fx-border-style: solid;
+}
+
+.root.success {
+	-fx-border-color: #0f0;
+	-fx-border-width: 2.0px;
+	-fx-border-style: solid;
+}
