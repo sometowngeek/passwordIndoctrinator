@@ -98,11 +98,12 @@ public class MainAppController {
 
 	private void setPasswordToMemorize() {
 		String toMemorize = this.pwfPasswordToMemorize.getText();
+		this.pwfPasswordToMemorize.setText("****");
 		this.lblViewPasswordToMemorize.setText("");
 		this.lblViewPasswordToMemorize.setVisible(false);
 		
 		if (toMemorize != null && !toMemorize.trim().isEmpty()) {
-			this.pwc = PasswordController.setPassword(this.pwfPasswordToMemorize.getText());
+			this.pwc = PasswordController.setPassword(toMemorize);
 			this.passwordSet = true;
 			this.pwfPasswordToMemorize.setDisable(true);
 			this.pwfPasswordAttempt.setDisable(false);
