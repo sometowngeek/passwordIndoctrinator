@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
@@ -44,6 +45,9 @@ public class MainAppController {
     @FXML
     private VBox vboxRoot;
     
+    @FXML
+    private Label lblViewPasswordToMemorize;
+    
     private boolean passwordSet;
     
     private PasswordController pwc;
@@ -54,12 +58,16 @@ public class MainAppController {
 
     @FXML
     void handleCheckButtonAction(ActionEvent event) {
-    	if (!passwordSet) {
+    	doCheckButtonAction();
+    }
+    
+	private void doCheckButtonAction() {
+		if (!passwordSet) {
     		setPasswordToMemorize();
     	} else {
     		checkMatchingPassword();
     	}
-    }
+	}
 
 	private void checkMatchingPassword() {
 		String attempt = this.pwfPasswordAttempt.getText();
@@ -90,6 +98,8 @@ public class MainAppController {
 
 	private void setPasswordToMemorize() {
 		String toMemorize = this.pwfPasswordToMemorize.getText();
+		this.lblViewPasswordToMemorize.setText("");
+		this.lblViewPasswordToMemorize.setVisible(false);
 		
 		if (toMemorize != null && !toMemorize.trim().isEmpty()) {
 			this.pwc = PasswordController.setPassword(this.pwfPasswordToMemorize.getText());
@@ -110,7 +120,11 @@ public class MainAppController {
     @FXML
     void handlePasswordToMemorizeKeyTypedAction(KeyEvent event) {
     	String toMemorize = this.pwfPasswordToMemorize.getText();
+    	this.lblViewPasswordToMemorize.setText(toMemorize);
+    	this.lblViewPasswordToMemorize.setVisible(true);
     	String key = event.getCharacter();
+    	
+    	
     	
     	if(toMemorize != null && !toMemorize.trim().isEmpty()) {
     		this.btnCheck.setDisable(false);
@@ -134,6 +148,17 @@ public class MainAppController {
     		this.btnCheck.setDisable(true);
     	}
     }
+    
+    @FXML
+    void handleVBoxKeyOnReleasedAction(KeyEvent event) {
+    	KeyCode code = event.getCode();
+    	
+    	if (code.equals(KeyCode.ESCAPE)) {
+    		this.prepareStartup();
+    	} else if (code.equals(KeyCode.ENTER)){
+    		this.doCheckButtonAction();
+    	}
+    }
 
     @FXML
     void initialize() {
@@ -145,14 +170,18 @@ public class MainAppController {
         assert btnReset != null : "fx:id=\"btnReset\" was not injected: check your FXML file 'PasswordIndoctrinator.fxml'.";
         assert btnCheck != null : "fx:id=\"btnCheck\" was not injected: check your FXML file 'PasswordIndoctrinator.fxml'.";
         assert vboxRoot != null : "fx:id=\"vboxRoot\" was not injected: check your FXML file 'PasswordIndoctrinator.fxml'.";
+        assert lblViewPasswordToMemorize != null : "fx:id\"lblViewPasswordToMemorize\" was not injected: check your FXML file 'PasswordIndoctrinator.fxml'";
         this.prepareStartup();
     }
     
     private void prepareStartup() {
     	this.pwfPasswordToMemorize.setText("");
     	this.pwfPasswordToMemorize.setDisable(false);
+    	this.pwfPasswordToMemorize.requestFocus();
     	this.pwfPasswordAttempt.setText("");
     	this.pwfPasswordAttempt.setDisable(true);
+		this.lblViewPasswordToMemorize.setText("");
+		this.lblViewPasswordToMemorize.setVisible(true);
     	this.lblStatus.setText("");
     	this.passwordSet = false;
     	this.pwc = null;

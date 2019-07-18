@@ -5,14 +5,14 @@
     <!--define folder properties-->
     <property name="dir.buildfile" value="."/>
     <property name="dir.workspace" value="${dir.buildfile}/.."/>
-    <property name="dir.jarfile" value="${dir.buildfile}"/>
+    <property name="dir.jarfile" value="${dir.workspace}"/>
     <target name="create_run_jar">
-        <jar destfile="${dir.jarfile}/PasswordIndoctrinator.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${dir.workspace}/PasswordIndoctrinator.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="application.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="${dir.jarfile}/bin"/>
+            <fileset dir="${dir.buildfile}/bin"/>
             <zipfileset excludes="META-INF/*.SF" src="C:/Users/rober/.p2/pool/plugins/org.eclipse.fx.ide.css.jfx8_3.5.0.201902220800.jar"/>
         </jar>
     </target>
