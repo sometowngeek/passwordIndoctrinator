@@ -7,4 +7,4 @@ Sure, there are password managers, but there are some passwords you might need t
 This app will have you type the password you want to memorize and once you start, you need to type it accurately 10 times in a row before it stops.
 
 
-*This doc is still in the works...*
+<sub>*This doc is still in the works...*</sub>
